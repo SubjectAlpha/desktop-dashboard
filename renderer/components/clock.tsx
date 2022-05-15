@@ -12,7 +12,7 @@ export const Clock = () => {
 	}, [date]);
 
 	return (
-		<div>
+		<div className="border-2 border-sky-500">
 			<h2>{date.toLocaleString()}</h2>
 		</div>
 	);
