@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Clock } from "../components/clock";
 import { Reminders } from "../components/reminders";
+import { Affirmations } from "../components/affirmations";
 
 function Home() {
 	return (
@@ -10,14 +11,17 @@ function Home() {
 			<Head>
 				<title>Home - Nextron (with-typescript-tailwindcss)</title>
 			</Head>
-			<div className="flex flex-row w-full text-center">
-				<div className="basis-1/4">
-					<Clock />
+			<div className="container mx-auto">
+				<div className="flex flex-row w-full text-center">
+					<div className="basis-1/4">
+						<Clock />
+					</div>
+					<div className="basis-1/2">
+						<Affirmations />
+						<Reminders />
+					</div>
+					<div className="basis-1/4"></div>
 				</div>
-				<div className="basis-1/2">
-					<Reminders />
-				</div>
-				<div className="basis-1/4"></div>
 			</div>
 
 			<div className="mt-1 w-full flex-wrap flex justify-center">

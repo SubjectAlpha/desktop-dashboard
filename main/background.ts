@@ -15,8 +15,8 @@ if (isProd) {
 	await app.whenReady();
 
 	const mainWindow = createWindow("main", {
-		width: 1920,
-		height: 1080,
+		fullscreen: true,
+		frame: false,
 	});
 
 	if (isProd) {

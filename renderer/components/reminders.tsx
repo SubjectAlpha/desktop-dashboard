@@ -22,9 +22,9 @@ export const Reminders = () => {
 				);
 			})}
 			<hr />
-			<input
-				className="w-half"
-				type="text"
+			<textarea
+				style={{ color: "black" }}
+				className="w-full"
 				value={reminderText}
 				onChange={(e) => setReminderText(e.target.value)}
 			/>
