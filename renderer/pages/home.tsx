@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Clock } from "../components/clock";
 import { Reminders } from "../components/reminders";
 import { Affirmations } from "../components/affirmations";
+import { Notes } from "../components/notes";
 
 function Home() {
 	return (
@@ -20,7 +21,9 @@ function Home() {
 						<Affirmations />
 						<Reminders />
 					</div>
-					<div className="basis-1/4"></div>
+					<div className="basis-1/4">
+						<Notes />
+					</div>
 				</div>
 			</div>
 
