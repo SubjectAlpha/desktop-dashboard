@@ -10,27 +10,25 @@ function Home() {
 	return (
 		<React.Fragment>
 			<Head>
-				<title>Home - Nextron (with-typescript-tailwindcss)</title>
+				<title>Desktop Dashboard</title>
 			</Head>
-			<div className="container mx-auto">
+			<div className="mx-auto mt-10">
 				<div className="flex flex-row w-full text-center">
-					<div className="basis-1/4">
+					<div className="basis-1/4 mr-8 ml-8">
 						<Clock />
 					</div>
 					<div className="basis-1/2">
 						<Affirmations />
 						<Reminders />
 					</div>
-					<div className="basis-1/4">
+					<div className="basis-1/4 mr-8 ml-8">
 						<Notes />
+
+						<Link href="/settings" className="bottom-0">
+							<a className="btn-blue">Settings</a>
+						</Link>
 					</div>
 				</div>
-			</div>
-
-			<div className="mt-1 w-full flex-wrap flex justify-center">
-				<Link href="/next">
-					<a className="btn-blue">Go to next page</a>
-				</Link>
 			</div>
 		</React.Fragment>
 	);

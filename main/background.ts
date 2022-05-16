@@ -2,6 +2,7 @@ import { app, ipcMain } from "electron";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import Store from "electron-store";
+import { loadFunctions as loadReminderFunctions } from "./objects/reminders";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -32,12 +33,4 @@ app.on("window-all-closed", () => {
 	app.quit();
 });
 
-ipcMain.on("reminders-save", (event, reminders) => {
-	const store = new Store();
-	store.set("reminders", reminders);
-});
-
-ipcMain.on("reminders-read", (event, arg) => {
-	const store = new Store();
-	event.reply("reminders-read-reply", store.get("reminders"));
-});
+loadReminderFunctions();

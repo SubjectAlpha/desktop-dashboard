@@ -12,7 +12,7 @@ export const Reminders = () => {
 	};
 
 	return (
-		<React.Fragment>
+		<div className="border-2 h-full p-2">
 			<h2>Reminders</h2>
 			{reminders.map((reminder, index) => {
 				return (
@@ -28,6 +28,6 @@ export const Reminders = () => {
 				value={reminderText}
 				onChange={(e) => setReminderText(e.target.value)}
 			/>
-		</React.Fragment>
+		</div>
 	);
 };
