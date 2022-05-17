@@ -1,11 +1,12 @@
 import React from "react";
+import { BlueButton } from "./button";
 
 export const Notes = () => {
 	const [notes, setNotes] = React.useState([]);
 	const [text, setText] = React.useState("");
 
 	return (
-		<div className="border-2 h-full p-2">
+		<div className="border-2 h-3/4 p-2">
 			<h1>Notes</h1>
 			<br />
 			<textarea
@@ -14,7 +15,7 @@ export const Notes = () => {
 				value={text}
 				onChange={(e) => setText(e.target.value)}
 			/>
-			<button className="btn btn-blue">Save Note</button>
+			<BlueButton text="Save Note" />
 		</div>
 	);
 };

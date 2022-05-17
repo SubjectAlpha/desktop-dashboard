@@ -12,7 +12,7 @@ export const Reminders = () => {
 	};
 
 	return (
-		<div className="border-2 h-full p-2">
+		<div className="border-2 h-3/4 p-2">
 			<h2>Reminders</h2>
 			{reminders.map((reminder, index) => {
 				return (

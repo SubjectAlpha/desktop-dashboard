@@ -5,6 +5,7 @@ import { Clock } from "../components/clock";
 import { Reminders } from "../components/reminders";
 import { Affirmations } from "../components/affirmations";
 import { Notes } from "../components/notes";
+import ControlPanel from "../components/controlpanel";
 
 function Home() {
 	return (
@@ -12,8 +13,8 @@ function Home() {
 			<Head>
 				<title>Desktop Dashboard</title>
 			</Head>
-			<div className="mx-auto mt-10">
-				<div className="flex flex-row w-full text-center">
+			<div className="mx-auto">
+				<div className="flex flex-row w-full text-center h-screen">
 					<div className="basis-1/4 mr-8 ml-8">
 						<Clock />
 					</div>
@@ -24,9 +25,9 @@ function Home() {
 					<div className="basis-1/4 mr-8 ml-8">
 						<Notes />
 
-						<Link href="/settings" className="bottom-0">
-							<a className="btn-blue">Settings</a>
-						</Link>
+						<div className="content-end">
+							<ControlPanel />
+						</div>
 					</div>
 				</div>
 			</div>
