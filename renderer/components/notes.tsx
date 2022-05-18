@@ -1,45 +1,80 @@
 import React from "react";
 import { ipcRenderer } from "electron";
-import { BlueButton } from "./button";
+import { BlueButton, RedButton } from "./button";
 import Note from "../objects/notes";
 
 export const Notes = () => {
-	const [notes, setNotes] = React.useState(Array<Note>);
+	const [notes, setNotes] = React.useState(new Array<any>());
 	const [text, setText] = React.useState("");
 
 	React.useEffect(() => {
-        ipcRenderer.send("notes-read");
-		console.log("loading notes...")
-
-        ipcRenderer.on("notes-read-reply", (event, arg) => {
-            setNotes([...arg]);
-        });
+		if (ipcRenderer) {
+			ipcRenderer.send("notes-read");
+		}
 	}, []);
 
-	const saveNotes = () => {
-		const newNote = new Note(text);
-		let newNotes = [...notes, newNote];
-		setNotes(newNotes);
+	React.useEffect(() => {
+		const loadNotes = async (event, notes: Note[]) => {
+			setNotes([...notes]);
+		};
 
+		if (ipcRenderer) {
+			ipcRenderer.on("notes-read-reply", loadNotes);
+			return () => {
+				ipcRenderer.removeListener("notes-read-reply", loadNotes);
+			};
+		}
+	}, [notes]);
+
+	const saveNotes = () => {
+		if (text !== "" && text !== " " && text !== undefined) {
+			const newNote = new Note(text);
+			let newNotes = [...notes, newNote];
+			ipcRenderer.send("notes-save", newNotes);
+			setNotes(newNotes);
+			setText("");
+		}
+	};
+
+	const deleteNote = (noteId: string) => {
+		const newNotes = notes.filter((n) => n._id !== noteId);
 		ipcRenderer.send("notes-save", newNotes);
+		setNotes(newNotes);
 	};
 
 	return (
-		<div className="border-2 h-3/4 p-2">
-			<h1>Notes</h1>
-			{
-                notes.map(note => {
-                    return <span key={note.id}>{note.contents}</span>;
-                })
-            }
-			<br />
-			<textarea
-				style={{ color: "black" }}
-				className="w-full"
-				value={text}
-				onChange={(e) => setText(e.target.value)}
-			/>
-			<BlueButton text="Save Note" onClick={saveNotes} />
+		<div className="border-2 p-2">
+			<h2 className="font-medium text-3xl">Notes</h2>
+			<hr />
+			<div className="flex flex-row">
+				<div className="basis-3/4">
+					<textarea
+						style={{ color: "black" }}
+						className="w-full"
+						value={text}
+						onChange={(e) => setText(e.target.value)}
+					/>
+				</div>
+				<div className="basis-1/4">
+					<BlueButton text="Save Note" onClick={saveNotes} />
+				</div>
+			</div>
+			{notes.map((note) => (
+				<div
+					className="p-2 m-2 bg-gray-500 flex flex-row justify-between items-center"
+					key={note._id}
+				>
+					<div className="basis-1/2">{note._contents}</div>
+					<div className="basis-1/4">
+						<RedButton
+							text="Delete"
+							onClick={() => {
+								deleteNote(note._id);
+							}}
+						/>
+					</div>
+				</div>
+			))}
 		</div>
 	);
 };

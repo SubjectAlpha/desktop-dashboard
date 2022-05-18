@@ -14,7 +14,7 @@ function Home() {
 				<title>Desktop Dashboard</title>
 			</Head>
 			<div className="mx-auto">
-				<div className="flex flex-row w-full text-center h-screen">
+				<div className="flex flex-row w-full text-center">
 					<div className="basis-1/4 mr-8 ml-8">
 						<Clock />
 					</div>
@@ -24,7 +24,7 @@ function Home() {
 					</div>
 					<div className="basis-1/4 mr-8 ml-8">
 						<Notes />
-
+						<br />
 						<div className="content-end">
 							<ControlPanel />
 						</div>

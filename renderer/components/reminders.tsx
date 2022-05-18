@@ -15,8 +15,33 @@ export const Reminders = () => {
 	};
 
 	return (
-		<div className="border-2 h-3/4 p-2">
-			<h2>Reminders</h2>
+		<div className="border-2 p-2">
+			<h2 className="font-medium text-3xl">Reminders</h2>
+			<hr />
+			<div className="mt-2 mb-2 flex flex-row">
+				<div className="basis-1/2">
+					<textarea
+						style={{ color: "black" }}
+						className="w-full"
+						value={reminderText}
+						onChange={(e) => setReminderText(e.target.value)}
+					/>
+				</div>
+				<div className="flex flex-row basis-1/2 ml-2">
+					<div className="flex flex-col">
+						<h3>Notification Date/Time</h3>
+						<input
+							style={{ color: "black" }}
+							type={"datetime-local"}
+						/>
+					</div>
+					<label>
+						Remind Me?
+						<input style={{ color: "black" }} type={"checkbox"} />
+					</label>
+					<BlueButton onClick={saveReminders} text="Save Reminder" />
+				</div>
+			</div>
 			{reminders.map((reminder) => {
 				return (
 					<div key={reminder.id}>
@@ -24,14 +49,6 @@ export const Reminders = () => {
 					</div>
 				);
 			})}
-			<hr />
-			<textarea
-				style={{ color: "black" }}
-				className="w-full"
-				value={reminderText}
-				onChange={(e) => setReminderText(e.target.value)}
-			/>
-			<BlueButton onClick={saveReminders} text="Add" />
 		</div>
 	);
 };
