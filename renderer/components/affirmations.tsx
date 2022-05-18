@@ -1,8 +1,11 @@
 import React from "react";
+import Affirmation from "../objects/affirmations";
 import Marquee from "react-fast-marquee";
 
 export const Affirmations = () => {
-	const [affirmations, setAffirmations] = React.useState([]);
+	const [affirmations, setAffirmations] = React.useState(
+		new Array<Affirmation>()
+	);
 
 	const affms = [
 		"You look good today!",
@@ -15,9 +18,9 @@ export const Affirmations = () => {
 			<Marquee gradientColor={[17, 24, 39]}>
 				{affms.map((affirmation, index) => {
 					return (
-						<div key={index}>
-							<span className="mr-4">{affirmation}</span>
-						</div>
+						<span className="mr-4" key={index}>
+							{affirmation}
+						</span>
 					);
 				})}
 			</Marquee>

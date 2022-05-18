@@ -1,18 +1,4 @@
-import { ipcMain } from "electron";
-import Store from "electron-store";
 import Base from "./base";
-
-export function loadFunctions() {
-	ipcMain.on("reminders-save", (event, reminders) => {
-		const store = new Store();
-		store.set("reminders", reminders);
-	});
-
-	ipcMain.on("reminders-read", (event, arg) => {
-		const store = new Store();
-		event.reply("reminders-read-reply", store.get("reminders"));
-	});
-}
 
 export default class Reminder extends Base {
 	private _title: string;

@@ -15,14 +15,16 @@ export const Clock = () => {
 
 	React.useEffect(() => {
 		const interval = setInterval(() => {
-			setDate(new Date());
+			const date = new Date();
+
+			setDate(date);
 		}, 1000);
 
 		return () => clearInterval(interval);
 	}, [date]);
 
 	return (
-		<div className="border-2 border-sky-500 p-2 text-5xl">
+		<div className="border-2 border-sky-500 p-2 text-4xl">
 			<h2>{weekday[date.getDay()]}</h2>
 			<h2>{date.toLocaleString()}</h2>
 		</div>

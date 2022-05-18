@@ -3,6 +3,7 @@ import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import Store from "electron-store";
 import { loadFunctions as loadReminderFunctions } from "./objects/reminders";
+import { loadFunctions as loadNoteFunctions } from "./objects/notes";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -33,4 +34,9 @@ app.on("window-all-closed", () => {
 	app.quit();
 });
 
+ipcMain.on("quit-app", () => {
+	app.quit();
+});
+
 loadReminderFunctions();
+loadNoteFunctions();
