@@ -1,7 +1,9 @@
 import React from "react";
 import { ipcRenderer } from "electron";
-import { BlueButton, RedButton } from "./button";
+import { BlueButton, RedButton } from "./utility/button";
+import { FaTrash, FaSave } from "react-icons/fa";
 import Note from "../objects/notes";
+import TextArea from "./utility/textarea";
 
 export const Notes = () => {
 	const [notes, setNotes] = React.useState(new Array<any>());
@@ -15,6 +17,7 @@ export const Notes = () => {
 
 	React.useEffect(() => {
 		const loadNotes = async (event, notes: Note[]) => {
+			notes.reverse();
 			setNotes([...notes]);
 		};
 
@@ -46,17 +49,18 @@ export const Notes = () => {
 		<div className="border-2 p-2">
 			<h2 className="font-medium text-3xl">Notes</h2>
 			<hr />
-			<div className="flex flex-row">
+			<div className="flex flex-row p-2">
 				<div className="basis-3/4">
-					<textarea
-						style={{ color: "black" }}
+					<TextArea
 						className="w-full"
 						value={text}
 						onChange={(e) => setText(e.target.value)}
 					/>
 				</div>
 				<div className="basis-1/4">
-					<BlueButton text="Save Note" onClick={saveNotes} />
+					<BlueButton onClick={saveNotes}>
+						<FaSave />
+					</BlueButton>
 				</div>
 			</div>
 			{notes.map((note) => (
@@ -64,14 +68,15 @@ export const Notes = () => {
 					className="p-2 m-2 bg-gray-500 flex flex-row justify-between items-center"
 					key={note._id}
 				>
-					<div className="basis-1/2">{note._contents}</div>
+					<div className="basis-3/4">{note._contents}</div>
 					<div className="basis-1/4">
 						<RedButton
-							text="Delete"
 							onClick={() => {
 								deleteNote(note._id);
 							}}
-						/>
+						>
+							<FaTrash />
+						</RedButton>
 					</div>
 				</div>
 			))}

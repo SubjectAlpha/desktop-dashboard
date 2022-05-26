@@ -1,7 +1,8 @@
 import React from "react";
 import Reminder from "../objects/reminders";
 import { ipcRenderer } from "electron";
-import { BlueButton } from "./button";
+import { BlueButton } from "./utility/button";
+import TextArea from "./utility/textarea";
 
 export const Reminders = () => {
 	const [reminderText, setReminderText] = React.useState("");
@@ -20,9 +21,7 @@ export const Reminders = () => {
 			<hr />
 			<div className="mt-2 mb-2 flex flex-row">
 				<div className="basis-1/2">
-					<textarea
-						style={{ color: "black" }}
-						className="w-full"
+					<TextArea
 						value={reminderText}
 						onChange={(e) => setReminderText(e.target.value)}
 					/>

@@ -1,7 +1,7 @@
-import Link from "next/link";
 import React from "react";
 import { ipcRenderer } from "electron";
-import { BlueButton, RedButton } from "./button";
+import { BlueButton, RedButton } from "./utility/button";
+import { FaSignOutAlt, FaCog } from "react-icons/fa";
 
 export default function ControlPanel() {
 	const quitApp = () => {
@@ -11,8 +11,13 @@ export default function ControlPanel() {
 	return (
 		<div className="border-2 h-1/4 p-3">
 			<div className="flex flex-row w-full text-center">
-				<BlueButton href="/settings" text="Settings" />
-				<RedButton text="Quit" onClick={quitApp} />
+				<BlueButton href="/settings">
+					<FaCog />
+				</BlueButton>
+
+				<RedButton onClick={quitApp}>
+					<FaSignOutAlt />
+				</RedButton>
 			</div>
 		</div>
 	);

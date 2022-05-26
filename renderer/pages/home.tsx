@@ -16,6 +16,9 @@ function Home() {
 			<div className="mx-auto">
 				<div className="flex flex-row w-full text-center">
 					<div className="basis-1/4 mr-8 ml-8">
+						<div className="content-start">
+							<ControlPanel />
+						</div>
 						<Clock />
 					</div>
 					<div className="basis-1/2">
@@ -24,10 +27,6 @@ function Home() {
 					</div>
 					<div className="basis-1/4 mr-8 ml-8">
 						<Notes />
-						<br />
-						<div className="content-end">
-							<ControlPanel />
-						</div>
 					</div>
 				</div>
 			</div>
