@@ -15,19 +15,24 @@ export default function Settings() {
 					</Link>
 				</div>
 				<div className="basis-3/4 mr-8">
-					<div className="flex flex-col text-2xl w-full text-center border-2">
-						<div className="border-2">
-							<h1>Application Settings</h1>
-							<hr />
-							<p>Start with Windows?</p>
+					<div className="flex flex-row w-full">
+						<div className="basis-3/4 flex flex-col text-2xl w-full text-center border-2">
+							<div className="border-2">
+								<h1>Application Settings</h1>
+								<hr />
+								<p>Start with Windows?</p>
+							</div>
+
+							<div className="border-2">
+								<h1>Email Accounts</h1>
+								<hr />
+							</div>
 						</div>
-						<div className="border-2">
-							<h1>Manage Affirmations</h1>
-							<hr />
-						</div>
-						<div className="border-2">
-							<h1>Email Accounts</h1>
-							<hr />
+						<div className="basis-1/4">
+							<div className="border-2">
+								<h1>Manage Affirmations</h1>
+								<hr />
+							</div>
 						</div>
 					</div>
 				</div>

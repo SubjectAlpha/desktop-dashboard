@@ -17,8 +17,11 @@ export const Notes = () => {
 
 	React.useEffect(() => {
 		const loadNotes = async (event, notes: Note[]) => {
-			notes.reverse();
-			setNotes([...notes]);
+			if (notes) {
+				notes.reverse();
+
+				setNotes([...notes]);
+			}
 		};
 
 		if (ipcRenderer) {
