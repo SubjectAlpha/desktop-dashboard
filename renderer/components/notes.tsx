@@ -19,7 +19,6 @@ export const Notes = () => {
 		const loadNotes = async (event, notes: Note[]) => {
 			if (notes) {
 				notes.reverse();
-
 				setNotes([...notes]);
 			}
 		};

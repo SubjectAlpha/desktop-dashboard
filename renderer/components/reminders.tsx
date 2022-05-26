@@ -6,9 +6,32 @@ import TextArea from "./utility/textarea";
 
 export const Reminders = () => {
 	const [reminderText, setReminderText] = React.useState("");
-	const [reminders, setReminders] = React.useState(new Array<Reminder>());
+	const [reminders, setReminders] = React.useState(new Array<any>());
 
-	React.useEffect(() => {}, [reminders]);
+	React.useEffect(() => {
+		if (ipcRenderer) {
+			ipcRenderer.send("reminders-read");
+		}
+	}, []);
+
+	React.useEffect(() => {
+		const loadReminders = async (event, reminders: Reminder[]) => {
+			if (reminders) {
+				reminders.reverse();
+				setReminders([...reminders]);
+			}
+		};
+
+		if (ipcRenderer) {
+			ipcRenderer.on("reminders-read-reply", loadReminders);
+			return () => {
+				ipcRenderer.removeListener(
+					"reminders-read-reply",
+					loadReminders
+				);
+			};
+		}
+	}, [reminders]);
 
 	const saveReminders = () => {
 		let newReminders = [...reminders, { text: reminderText }];
@@ -43,8 +66,8 @@ export const Reminders = () => {
 			</div>
 			{reminders.map((reminder) => {
 				return (
-					<div key={reminder.id}>
-						<span>{reminder.contents}</span>
+					<div key={reminder._id}>
+						<span>{reminder._contents}</span>
 					</div>
 				);
 			})}

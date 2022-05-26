@@ -3,16 +3,21 @@ import Base from "./base";
 import { ipcMain } from "electron";
 
 export function loadFunctions() {
-	ipcMain.on("affirmations-save", (event, affirmations: Affirmation[]) => {
-		const store = new Store();
-		store.set("affirmations", [...affirmations]);
-		event.reply();
-	});
+	if (ipcMain) {
+		ipcMain.on(
+			"affirmations-save",
+			(event, affirmations: Array<Affirmation>) => {
+				console.log(affirmations);
+				const store = new Store();
+				store.set("affirmations", [...affirmations]);
+			}
+		);
 
-	ipcMain.on("affirmations-read", (event, arg) => {
-		const store = new Store();
-		event.reply("notes-read-reply", store.get("affirmations"));
-	});
+		ipcMain.on("affirmations-read", (event, arg) => {
+			const store = new Store();
+			event.reply("affirmations-read-reply", store.get("affirmations"));
+		});
+	}
 }
 
 export default class Affirmation extends Base {
