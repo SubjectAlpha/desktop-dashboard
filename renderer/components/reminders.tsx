@@ -3,6 +3,7 @@ import Reminder from "../objects/reminders";
 import { ipcRenderer } from "electron";
 import { BlueButton } from "./utility/button";
 import TextArea from "./utility/textarea";
+import DatePicker from "./utility/datepicker";
 
 export const Reminders = () => {
 	const [reminderText, setReminderText] = React.useState("");
@@ -52,10 +53,7 @@ export const Reminders = () => {
 				<div className="flex flex-row basis-1/2 ml-2">
 					<div className="flex flex-col">
 						<h3>Notification Date/Time</h3>
-						<input
-							style={{ color: "black" }}
-							type={"datetime-local"}
-						/>
+						<DatePicker onChange={(e) => {}} />
 					</div>
 					<label>
 						Remind Me?
@@ -64,13 +62,16 @@ export const Reminders = () => {
 					<BlueButton onClick={saveReminders} text="Save Reminder" />
 				</div>
 			</div>
-			{reminders.map((reminder) => {
-				return (
-					<div key={reminder._id}>
-						<span>{reminder._contents}</span>
+			<div className="flex flex-col mt-2">
+				{reminders.map((reminder) => (
+					<div
+						className="p-3 m-2 bg-sky-700 basis-full"
+						key={reminder._id}
+					>
+						{reminder._contents}
 					</div>
-				);
-			})}
+				))}
+			</div>
 		</div>
 	);
 };

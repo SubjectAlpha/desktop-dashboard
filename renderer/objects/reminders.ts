@@ -62,3 +62,9 @@ export default class Reminder extends Base {
 		return this._repeatDays;
 	}
 }
+
+enum ReminderStatus {
+	Pending,
+	Completed,
+	Overdue,
+}
