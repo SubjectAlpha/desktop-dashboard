@@ -5,7 +5,6 @@ import Base from "./base";
 export function loadFunctions() {
 	if (ipcMain) {
 		ipcMain.on("notes-save", (event, notes: Array<Note>) => {
-			console.log(notes);
 			const store = new Store();
 			store.set("notes", notes);
 		});

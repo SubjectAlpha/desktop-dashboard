@@ -55,6 +55,7 @@ export const Notes = () => {
 				<div className="basis-3/4">
 					<TextArea
 						className="w-full"
+						placeholder="Add a note..."
 						value={text}
 						onChange={(e) => setText(e.target.value)}
 					/>

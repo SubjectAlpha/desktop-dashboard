@@ -28,7 +28,7 @@ export const Affirmations = () => {
 	}, []);
 
 	return (
-		<div className="border-2 border-sky-500 w-full p-5 text-2xl">
+		<div className="border-2 border-white-500 w-full p-5 text-2xl">
 			<Marquee gradientColor={[17, 24, 39]}>
 				{affirmations.map((affirmation) => (
 					<span className="mr-4" key={affirmation._id}>

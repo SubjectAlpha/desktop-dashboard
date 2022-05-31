@@ -36,7 +36,7 @@ if (isProd) {
 
 	const store = new Store();
 	const firstRun = store.get("firstRun");
-	if (firstRun == undefined || firstRun == true || true) {
+	if (firstRun == undefined || firstRun == true) {
 		store.set("firstRun", false);
 
 		const affirmations: Array<Affirmation> = [
@@ -55,8 +55,9 @@ if (isProd) {
 		const defaultReminder = new Reminder(
 			"Default Reminder",
 			"This your reminder to create more reminders.",
-			new Date(2, 28, 2022),
-			false
+			new Date(2022, 1, 28, 9),
+			true,
+			[0, 3, 5, 6]
 		);
 		store.set("reminders", [defaultReminder]);
 	}

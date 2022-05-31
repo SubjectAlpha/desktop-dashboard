@@ -24,7 +24,7 @@ export const Clock = () => {
 	}, [date]);
 
 	return (
-		<div className="border-2 border-sky-500 p-2 text-4xl">
+		<div className="border-2 border-white-500 p-2 text-4xl">
 			<h2>{weekday[date.getDay()]}</h2>
 			<h2>{date.toLocaleString()}</h2>
 		</div>

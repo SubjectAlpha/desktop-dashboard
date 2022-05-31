@@ -1,12 +1,26 @@
 import React from "react";
 import Reminder from "../objects/reminders";
 import { ipcRenderer } from "electron";
-import { BlueButton } from "./utility/button";
+import { BlueButton, RedButton } from "./utility/button";
 import TextArea from "./utility/textarea";
 import DatePicker from "./utility/datepicker";
+import { FaSave, FaTrash } from "react-icons/fa";
 
 export const Reminders = () => {
+	const weekday = [
+		"Sunday",
+		"Monday",
+		"Tuesday",
+		"Wednesday",
+		"Thursday",
+		"Friday",
+		"Saturday",
+	];
+
 	const [reminderText, setReminderText] = React.useState("");
+	const [reminderDate, setReminderDate] = React.useState(new Date());
+	const [repeat, setRepeat] = React.useState(false);
+	const [repeatDays, setRepeatDays] = React.useState(new Array<number>);
 	const [reminders, setReminders] = React.useState(new Array<any>());
 
 	React.useEffect(() => {
@@ -35,8 +49,18 @@ export const Reminders = () => {
 	}, [reminders]);
 
 	const saveReminders = () => {
-		let newReminders = [...reminders, { text: reminderText }];
-		ipcRenderer.send("reminders-save", ...reminders);
+		let newReminders = [
+			...reminders,
+			new Reminder("", reminderText, reminderDate, repeat, repeatDays),
+		];
+		ipcRenderer.send("reminders-save", newReminders);
+		setReminders(newReminders);
+	};
+
+	const deleteReminder = (reminderId: string) => {
+		const newReminders = reminders.filter((r) => r._id !== reminderId);
+		ipcRenderer.send("notes-save", newReminders);
+		setReminders(newReminders);
 	};
 
 	return (
@@ -44,31 +68,83 @@ export const Reminders = () => {
 			<h2 className="font-medium text-3xl">Reminders</h2>
 			<hr />
 			<div className="mt-2 mb-2 flex flex-row">
-				<div className="basis-1/2">
+				<div className="basis-1/4">
 					<TextArea
 						value={reminderText}
 						onChange={(e) => setReminderText(e.target.value)}
+						placeholder="Add a reminder..."
 					/>
 				</div>
-				<div className="flex flex-row basis-1/2 ml-2">
-					<div className="flex flex-col">
+				<div className="flex flex-row basis-3/4 ml-2">
+					<div className="flex flex-col mr-2">
 						<h3>Notification Date/Time</h3>
-						<DatePicker onChange={(e) => {}} />
+						<DatePicker
+							onChange={(e) => {
+								setReminderDate(new Date(e.target.value));
+							}}
+						/>
 					</div>
-					<label>
-						Remind Me?
-						<input style={{ color: "black" }} type={"checkbox"} />
-					</label>
-					<BlueButton onClick={saveReminders} text="Save Reminder" />
+					<div className="flex flex-col text-center mr-2">
+						<label>
+							Remind Me?
+							<input
+								style={{ color: "black" }}
+								type={"checkbox"}
+                                onChange={(e) => setRepeat(e.target.checked)}
+							/>
+						</label>
+						<select multiple style={{ color: "black" }} onChange={(e) => {
+                            let tempRepeatDays = new Array<number>();
+                            for(let i = 0; i < e.target.selectedOptions.length; i++) {
+                                tempRepeatDays.push(parseInt(e.target.selectedOptions[i].value));
+                            }
+                            setRepeatDays([...tempRepeatDays]);
+                        }}>
+							<option value={0}>Sunday</option>
+							<option value={1}>Monday</option>
+							<option value={2}>Tuesday</option>
+							<option value={3}>Wednesday</option>
+							<option value={4}>Thursday</option>
+							<option value={5}>Friday</option>
+							<option value={6}>Saturday</option>
+						</select>
+					</div>
+					<BlueButton onClick={saveReminders}>
+						<FaSave />
+					</BlueButton>
 				</div>
 			</div>
 			<div className="flex flex-col mt-2">
 				{reminders.map((reminder) => (
 					<div
-						className="p-3 m-2 bg-sky-700 basis-full"
+						className="p-3 m-2 bg-sky-900 basis-full flex flex-row"
 						key={reminder._id}
 					>
-						{reminder._contents}
+						<div className="basis-1/2">{reminder._contents}</div>
+						<div className="basis-1/4">
+							<p>{reminder._dateTime}</p>
+							<p>
+								{reminder._repeat &&
+								reminder._repeatDays.length > 0
+									? reminder._repeatDays.map(
+											(day: number) => (
+												<span key={day}>
+													{weekday[day]},{" "}
+												</span>
+											)
+									  )
+									: "No Repeat"}
+							</p>
+						</div>
+						<div className="basis-1/4">
+							<RedButton
+								onClick={() => {
+									deleteReminder(reminder._id);
+								}}
+							>
+								<FaTrash />
+							</RedButton>
+						</div>
 					</div>
 				))}
 			</div>

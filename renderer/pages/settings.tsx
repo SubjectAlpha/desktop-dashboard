@@ -91,6 +91,7 @@ export default function Settings() {
 									<div className="basis-3/4">
 										<TextArea
 											className="w-full"
+											placeholder="Add an affirmation..."
 											value={affirmationText}
 											onChange={(e) =>
 												setAffirmationText(

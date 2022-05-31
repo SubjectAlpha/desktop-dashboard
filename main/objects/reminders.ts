@@ -3,23 +3,25 @@ import Store from "electron-store";
 import Base from "./base";
 
 export function loadFunctions() {
-	ipcMain.on("reminders-save", (event, reminders) => {
-		const store = new Store();
-		store.set("reminders", reminders);
-	});
+	if (ipcMain) {
+		ipcMain.on("reminders-save", (event, reminders) => {
+			const store = new Store();
+			store.set("reminders", reminders);
+		});
 
-	ipcMain.on("reminders-read", (event, arg) => {
-		const store = new Store();
-		event.reply("reminders-read-reply", store.get("reminders"));
-	});
+		ipcMain.on("reminders-read", (event, arg) => {
+			const store = new Store();
+			event.reply("reminders-read-reply", store.get("reminders"));
+		});
+	}
 }
 
 export default class Reminder extends Base {
 	private _title: string;
 	private _contents: string;
-	private _dateTime: Date;
+	private _dateTime: string;
 	private _repeat: boolean;
-	private _repeatDays: number;
+	private _repeatDays: number[];
 	/**
 	 *
 	 */
@@ -28,14 +30,14 @@ export default class Reminder extends Base {
 		contents: string,
 		dateTime?: Date,
 		repeat?: boolean,
-		repeatDays?: number,
+		repeatDays?: number[],
 		id?: string,
 		dateAdded?: Date
 	) {
 		super(id, dateAdded);
 		this._title = title;
 		this._contents = contents;
-		this._dateTime = dateTime;
+		this._dateTime = dateTime.toLocaleDateString();
 		this._repeat = repeat;
 		this._repeatDays = repeatDays;
 	}
@@ -56,23 +58,28 @@ export default class Reminder extends Base {
 		this._contents = value;
 	}
 
-	get dateTime(): Date {
+	get dateTime(): string {
 		return this._dateTime;
 	}
 
-	set dateTime(value: Date) {
-		this._dateTime = value;
+	set dateTime(value: Date | string) {
+		if (typeof value === "string") {
+			let newDate = new Date(value);
+			this._dateTime = newDate.toLocaleString();
+		} else {
+			this._dateTime = value.toLocaleString();
+		}
 	}
 
 	get repeat(): boolean {
-		return this.repeat;
+		return this._repeat;
 	}
 
 	set repeat(value: boolean) {
 		this._repeat = value;
 	}
 
-	get repeatDays(): number {
+	get repeatDays(): number[] {
 		return this._repeatDays;
 	}
 }
