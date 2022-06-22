@@ -13,6 +13,7 @@ export default function Settings() {
 
 	React.useEffect(() => {
 		if (ipcRenderer) {
+			ipcRenderer.send("open-settings");
 			ipcRenderer.send("affirmations-read");
 		}
 	}, []);

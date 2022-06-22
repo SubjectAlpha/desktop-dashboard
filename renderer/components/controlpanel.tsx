@@ -1,11 +1,30 @@
 import React from "react";
 import { ipcRenderer } from "electron";
-import { BlueButton, RedButton } from "./utility/button";
-import { FaSignOutAlt, FaCog } from "react-icons/fa";
+import Button, { BlueButton, RedButton } from "./utility/button";
+import {
+	FaCog,
+	FaWindowMaximize,
+	FaWindowMinimize,
+	FaWindowClose,
+} from "react-icons/fa";
 
 export default function ControlPanel() {
+	const minimizeApp = () => {
+		if (ipcRenderer) {
+			ipcRenderer.send("minimize-app");
+		}
+	};
+
+	const maximizeApp = () => {
+		if (ipcRenderer) {
+			ipcRenderer.send("maximize-app");
+		}
+	};
+
 	const quitApp = () => {
-		ipcRenderer.send("quit-app");
+		if (ipcRenderer) {
+			ipcRenderer.send("quit-app");
+		}
 	};
 
 	return (
@@ -14,9 +33,15 @@ export default function ControlPanel() {
 				<BlueButton href="/settings">
 					<FaCog />
 				</BlueButton>
+				<BlueButton onClick={minimizeApp}>
+					<FaWindowMinimize />
+				</BlueButton>
+				<BlueButton onClick={maximizeApp}>
+					<FaWindowMaximize />
+				</BlueButton>
 
 				<RedButton onClick={quitApp}>
-					<FaSignOutAlt />
+					<FaWindowClose />
 				</RedButton>
 			</div>
 		</div>

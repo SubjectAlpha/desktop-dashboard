@@ -7,7 +7,6 @@ export function loadFunctions() {
 		ipcMain.on(
 			"affirmations-save",
 			(event, affirmations: Array<Affirmation>) => {
-				console.log(affirmations);
 				const store = new Store();
 				store.set("affirmations", [...affirmations]);
 			}

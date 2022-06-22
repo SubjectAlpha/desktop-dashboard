@@ -1,4 +1,4 @@
-import { app, ipcMain } from "electron";
+import { app, ipcMain, screen } from "electron";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import Store from "electron-store";
@@ -22,7 +22,7 @@ if (isProd) {
 	await app.whenReady();
 
 	const mainWindow = createWindow("main", {
-		fullscreen: true,
+		fullscreen: false,
 		frame: false,
 	});
 
@@ -61,16 +61,36 @@ if (isProd) {
 		);
 		store.set("reminders", [defaultReminder]);
 	}
+
+	ipcMain.on("quit-app", () => {
+		app.quit();
+	});
+
+	ipcMain.on("minimize-app", () => {
+		mainWindow.minimize();
+	});
+
+	ipcMain.on("maximize-app", () => {
+		if (mainWindow.isMaximized()) {
+			mainWindow.unmaximize();
+		} else {
+			mainWindow.maximize();
+		}
+	});
+
+	ipcMain.on("open-settings", (e, arg) => {
+		let settingsPreload = {
+			displayCount: screen.getAllDisplays().length,
+		};
+
+		e.reply("settings-loaded", settingsPreload);
+	});
+
+	loadAffirmationFunctions();
+	loadReminderFunctions();
+	loadNoteFunctions();
 })();
 
 app.on("window-all-closed", () => {
 	app.quit();
 });
-
-ipcMain.on("quit-app", () => {
-	app.quit();
-});
-
-loadAffirmationFunctions();
-loadReminderFunctions();
-loadNoteFunctions();

@@ -7,7 +7,7 @@ import DatePicker from "./utility/datepicker";
 import { FaSave, FaTrash } from "react-icons/fa";
 
 export const Reminders = () => {
-	const weekday = [
+	const weekdays = [
 		"Sunday",
 		"Monday",
 		"Tuesday",
@@ -100,13 +100,9 @@ export const Reminders = () => {
                             }
                             setRepeatDays([...tempRepeatDays]);
                         }}>
-							<option value={0}>Sunday</option>
-							<option value={1}>Monday</option>
-							<option value={2}>Tuesday</option>
-							<option value={3}>Wednesday</option>
-							<option value={4}>Thursday</option>
-							<option value={5}>Friday</option>
-							<option value={6}>Saturday</option>
+                            {weekdays.map((day, index) => {
+                                return <option key={index} value={index}>{day}</option>
+                            })}
 						</select>
 					</div>
 					<BlueButton onClick={saveReminders}>
@@ -129,7 +125,7 @@ export const Reminders = () => {
 									? reminder._repeatDays.map(
 											(day: number) => (
 												<span key={day}>
-													{weekday[day]},{" "}
+													{weekdays[day]},{" "}
 												</span>
 											)
 									  )
