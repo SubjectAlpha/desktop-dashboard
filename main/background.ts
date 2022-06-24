@@ -24,6 +24,7 @@ if (isProd) {
 	const mainWindow = createWindow("main", {
 		fullscreen: false,
 		frame: false,
+		resizable: true,
 	});
 
 	if (isProd) {

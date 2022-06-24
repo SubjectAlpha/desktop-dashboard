@@ -6,6 +6,8 @@ export default class Reminder extends Base {
 	private _dateTime: string;
 	private _repeat: boolean;
 	private _repeatDays: number[];
+
+	public Snoozed: boolean;
 	/**
 	 *
 	 */
