@@ -6,8 +6,8 @@ export default class Reminder extends Base {
 	private _dateTime: string;
 	private _repeat: boolean;
 	private _repeatDays: number[];
+	private _snoozed: boolean;
 
-	public Snoozed: boolean;
 	/**
 	 *
 	 */
@@ -58,7 +58,7 @@ export default class Reminder extends Base {
 	}
 
 	get repeat(): boolean {
-		return this.repeat;
+		return this._repeat;
 	}
 
 	set repeat(value: boolean) {
@@ -67,6 +67,14 @@ export default class Reminder extends Base {
 
 	get repeatDays(): number[] {
 		return this._repeatDays;
+	}
+
+	get snoozed(): boolean {
+		return this._snoozed;
+	}
+
+	set snoozed(snoozed: boolean) {
+		this._snoozed = snoozed;
 	}
 }
 

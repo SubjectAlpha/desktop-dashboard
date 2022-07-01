@@ -94,25 +94,28 @@ function Home() {
 
     React.useEffect(() => {
         reminders.forEach((a) => {
+            console.log("snoozed", a._snoozed);
 			let alarmTime = new Date(a._dateTime);
 
 			if (date >= alarmTime && !a.Snoozed ) {
                 if(!activeReminders.includes(a))
                 {
                     setActiveReminders([...activeReminders, a]);
-                    setPlaying(false);
+                    setPlaying(true);
                     toast(a._contents, {
                         onClose: () => {
-                            a.
+                            var filteredActive = activeReminders.filter(r => r == a);
+                            a._snoozed = true;
                             //let reminderFilter = activeReminders.filter(r => r.id != a.id);
                             //setActiveReminders(reminderFilter);
                             setPlaying(false);
+                            setActiveReminders([...filteredActive]);
                         }
                     });
                 }
 			}
 		});
-    }, [date, reminders])
+    }, [date && reminders])
 
     React.useEffect(() =>{
         console.log("active reminders", activeReminders);
