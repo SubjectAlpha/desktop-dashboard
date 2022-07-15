@@ -6,6 +6,7 @@ type ButtonProps = {
 	href?: string;
 	text?: string;
 	children?: React.ReactNode | React.ReactNode[];
+	style?: React.CSSProperties;
 };
 
 export default function Button(props: ButtonProps) {
@@ -77,14 +78,22 @@ export function BlueButton(props: ButtonProps) {
 	if (props.href) {
 		return (
 			<Link href={props.href}>
-				<button onClick={props.onClick} className={className}>
+				<button
+					onClick={props.onClick}
+					className={className}
+					style={props.style}
+				>
 					{props.text || props.children}
 				</button>
 			</Link>
 		);
 	}
 	return (
-		<button onClick={props.onClick} className={className}>
+		<button
+			onClick={props.onClick}
+			className={className}
+			style={props.style}
+		>
 			{props.text || props.children}
 		</button>
 	);

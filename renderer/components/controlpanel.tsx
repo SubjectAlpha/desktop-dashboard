@@ -1,12 +1,18 @@
 import React from "react";
 import { ipcRenderer } from "electron";
-import Button, { BlueButton, RedButton } from "./utility/button";
+import { BlueButton, RedButton } from "./utility/button";
 import {
 	FaCog,
 	FaWindowMaximize,
 	FaWindowMinimize,
 	FaWindowClose,
+	FaArrowsAlt,
 } from "react-icons/fa";
+
+const draggableStyle: any = {
+	WebkitUserSelect: "none",
+	WebkitAppRegion: "drag",
+};
 
 export default function ControlPanel() {
 	const minimizeApp = () => {
@@ -39,7 +45,9 @@ export default function ControlPanel() {
 				<BlueButton onClick={maximizeApp}>
 					<FaWindowMaximize />
 				</BlueButton>
-
+				<BlueButton style={draggableStyle}>
+					<FaArrowsAlt />
+				</BlueButton>
 				<RedButton onClick={quitApp}>
 					<FaWindowClose />
 				</RedButton>

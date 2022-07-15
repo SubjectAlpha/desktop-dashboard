@@ -22,6 +22,7 @@ export default class Reminder extends Base {
 	private _dateTime: string;
 	private _repeat: boolean;
 	private _repeatDays: number[];
+	private _notified: boolean;
 	/**
 	 *
 	 */
@@ -81,6 +82,14 @@ export default class Reminder extends Base {
 
 	get repeatDays(): number[] {
 		return this._repeatDays;
+	}
+
+	set notified(notified: boolean) {
+		this._notified = notified;
+	}
+
+	get notified(): boolean {
+		return this._notified;
 	}
 }
 

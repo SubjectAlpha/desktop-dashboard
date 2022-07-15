@@ -45,10 +45,6 @@ function Home() {
 	}, []);
 
     React.useEffect(() => {
-		playing ? audio.play() : audio.pause();
-	}, [date, playing]);
-
-	React.useEffect(() => {
 		const interval = setInterval(() => {
 			const date = new Date();
 
@@ -57,6 +53,10 @@ function Home() {
 
 		return () => clearInterval(interval);
 	}, [date]);
+
+    React.useEffect(() => {
+		playing ? audio.play() : audio.pause();
+	}, [date, playing]);
 
 	React.useEffect(() => {
 		const loadReminders = async (event, reminders: Reminder[]) => {
@@ -77,21 +77,6 @@ function Home() {
 		}
 	}, [reminders]);
 
-    const saveReminders = () => {
-		let newReminders = [
-			...reminders,
-			new Reminder("", reminderText, reminderDate, repeat, repeatDays),
-		];
-		ipcRenderer.send("reminders-save", newReminders);
-		setReminders(newReminders);
-	};
-
-	const deleteReminder = (reminderId: string) => {
-		const newReminders = reminders.filter((r) => r._id !== reminderId);
-		ipcRenderer.send("notes-save", newReminders);
-		setReminders(newReminders);
-	};
-
     React.useEffect(() => {
         reminders.forEach((a) => {
             console.log("snoozed", a._snoozed);
@@ -101,7 +86,8 @@ function Home() {
                 if(!activeReminders.includes(a))
                 {
                     setActiveReminders([...activeReminders, a]);
-                    setPlaying(true);
+                    setPlaying(false);
+                    new Notification("New Reminder", { body: a._contents })
                     toast(a._contents, {
                         onClose: () => {
                             var filteredActive = activeReminders.filter(r => r == a);
@@ -120,7 +106,21 @@ function Home() {
     React.useEffect(() =>{
         console.log("active reminders", activeReminders);
     }, [activeReminders])
-    
+
+    const saveReminders = () => {
+		let newReminders = [
+			...reminders,
+			new Reminder("", reminderText, reminderDate, repeat, repeatDays),
+		];
+		ipcRenderer.send("reminders-save", newReminders);
+		setReminders(newReminders);
+	};
+
+	const deleteReminder = (reminderId: string) => {
+		const newReminders = reminders.filter((r) => r._id !== reminderId);
+		ipcRenderer.send("notes-save", newReminders);
+		setReminders(newReminders);
+	};
 
 	return (
 		<React.Fragment>
