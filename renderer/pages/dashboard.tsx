@@ -35,7 +35,6 @@ function Dashboard() {
 			: null
 	);
 	const [playing, setPlaying] = React.useState(false);
-    const [activeReminders, setActiveReminders] = React.useState(Array<Reminder>);
 
 	React.useEffect(() => {
 		if (ipcRenderer) {
@@ -78,26 +77,18 @@ function Dashboard() {
 
     React.useEffect(() => {
         reminders.forEach((reminder) => {
-            console.log("snoozed", reminder.snoozed);
-			let alarmTime = new Date(reminder.dateTime);
+            let alarmTime = new Date(reminder.dateTime);
 
-			if (date >= alarmTime && !reminder.snoozed ) {
-                if(!activeReminders.includes(reminder))
-                {
-                    setActiveReminders([...activeReminders, reminder]);
-                    new Notification(reminder.title, { body: reminder.contents });
-                    if(!playing){
-                        setPlaying(true);
-                    }
-                    toast(reminder.contents, {
-                        onClose: () => {
-                            var filteredActive = activeReminders.filter(active => active != reminder);
-                            reminder.snoozed = true;
-                            setPlaying(false);
-                            setActiveReminders([...filteredActive]);
-                        }
-                    });
+			if (date >= alarmTime && reminder.snoozed ) {
+                new Notification(reminder.title, { body: reminder.contents });
+                if(!playing){
+                    setPlaying(true);
                 }
+                toast(reminder.contents, {
+                    onClose: () => {
+                        snoozeReminder(reminder);
+                    }
+                });
 			}
 		});
     }, [date && reminders])
@@ -111,9 +102,22 @@ function Dashboard() {
 		setReminders(newReminders);
 	};
 
+    const snoozeReminder = (reminder: Reminder) => {
+        let nextAlarmTime = new Date();
+        nextAlarmTime.setMinutes(nextAlarmTime.getMinutes() + 5);
+        reminder.snoozed = true;
+        reminder.dateTime = nextAlarmTime.toISOString();
+        setPlaying(false);
+
+        var updatedReminders = reminders.filter(r => r != reminder);
+        updatedReminders = [...updatedReminders, reminder];
+        ipcRenderer.send("reminders-save", updatedReminders);
+        setReminders(updatedReminders);
+    }
+
 	const deleteReminder = (reminderId: string) => {
 		const newReminders = reminders.filter((r) => r.id !== reminderId);
-		ipcRenderer.send("notes-save", newReminders);
+		ipcRenderer.send("reminders-save", newReminders);
 		setReminders(newReminders);
 	};
 
@@ -187,7 +191,7 @@ function Dashboard() {
                                     >
                                         <div className="basis-1/2">{reminder.contents}</div>
                                         <div className="basis-1/4">
-                                            <p>{reminder.dateTime}</p>
+                                            <p>{new Date(reminder.dateTime).toLocaleString()}</p>
                                             <p>
                                                 {reminder.repeat &&
                                                 reminder.repeatDays.length > 0

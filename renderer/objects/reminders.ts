@@ -23,7 +23,7 @@ export default class Reminder extends Base {
 		super(id, dateAdded);
 		this.title = title;
 		this.contents = contents;
-		this.dateTime = dateTime.toLocaleString();
+		this.dateTime = dateTime.toISOString();
 		this.repeat = repeat;
 		this.repeatDays = repeatDays;
 	}

@@ -80,6 +80,7 @@ export default function Settings() {
 								<hr />
 								<p>Start with system?</p>
 								<p>Dark/Light Mode</p>
+								<p>Snooze length</p>
 							</div>
 
 							<div className="border-2">
