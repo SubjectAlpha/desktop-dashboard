@@ -34,7 +34,7 @@ export default function ControlPanel() {
 	};
 
 	return (
-		<div className="border-2 h-1/4 p-3">
+		<div className="h-1/4 p-3">
 			<div className="flex flex-row w-full text-center">
 				<BlueButton href="/settings">
 					<FaCog />

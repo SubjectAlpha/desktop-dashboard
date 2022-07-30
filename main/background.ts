@@ -3,12 +3,15 @@ import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import Store from "electron-store";
 import Reminder, {
-	loadFunctions as loadReminderFunctions,
+	loadListeners as loadReminderListeners,
 } from "./objects/reminders";
-import Note, { loadFunctions as loadNoteFunctions } from "./objects/notes";
+import Note, { loadListeners as loadNoteListeners } from "./objects/notes";
 import Affirmation, {
-	loadFunctions as loadAffirmationFunctions,
+	loadListeners as loadAffirmationListeners,
 } from "./objects/affirmations";
+import OAuthHandler, {
+	loadListeners as loadOAuthListeners,
+} from "./helpers/oauthHandler";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -87,9 +90,10 @@ if (isProd) {
 		e.reply("settings-loaded", settingsPreload);
 	});
 
-	loadAffirmationFunctions();
-	loadReminderFunctions();
-	loadNoteFunctions();
+	loadOAuthListeners();
+	loadAffirmationListeners();
+	loadReminderListeners();
+	loadNoteListeners();
 })();
 
 app.on("window-all-closed", () => {

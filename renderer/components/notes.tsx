@@ -6,7 +6,7 @@ import Note from "../objects/notes";
 import TextArea from "./utility/textarea";
 
 export const Notes = () => {
-	const [notes, setNotes] = React.useState(new Array<any>());
+	const [notes, setNotes] = React.useState(new Array<Note>());
 	const [text, setText] = React.useState("");
 
 	React.useEffect(() => {
@@ -16,9 +16,8 @@ export const Notes = () => {
 	}, []);
 
 	React.useEffect(() => {
-		const loadNotes = async (event, notes: Note[]) => {
+		const loadNotes = async (event, notes: Array<Note>) => {
 			if (notes) {
-				notes.reverse();
 				setNotes([...notes]);
 			}
 		};
@@ -42,15 +41,13 @@ export const Notes = () => {
 	};
 
 	const deleteNote = (noteId: string) => {
-		const newNotes = notes.filter((n) => n._id !== noteId);
+		const newNotes = notes.filter((n) => n.id !== noteId);
 		ipcRenderer.send("notes-save", newNotes);
 		setNotes(newNotes);
 	};
 
 	return (
-		<div className="border-2 p-2">
-			<h2 className="font-medium text-3xl">Notes</h2>
-			<hr />
+		<div className="p-2">
 			<div className="flex flex-row p-2">
 				<div className="basis-3/4">
 					<TextArea
@@ -66,23 +63,25 @@ export const Notes = () => {
 					</BlueButton>
 				</div>
 			</div>
-			{notes.map((note) => (
-				<div
-					className="p-2 m-2 bg-gray-500 flex flex-row justify-between items-center"
-					key={note._id}
-				>
-					<div className="basis-3/4">{note._contents}</div>
-					<div className="basis-1/4">
-						<RedButton
-							onClick={() => {
-								deleteNote(note._id);
-							}}
-						>
-							<FaTrash />
-						</RedButton>
+			<div className="overflow-y-scroll" style={{ maxHeight: "65vh" }}>
+				{notes.map((note) => (
+					<div
+						className="p-2 m-2 secondary-item flex flex-row justify-between items-center"
+						key={note.id}
+					>
+						<div className="basis-3/4">{note.contents}</div>
+						<div className="basis-1/4">
+							<RedButton
+								onClick={() => {
+									deleteNote(note.id);
+								}}
+							>
+								<FaTrash />
+							</RedButton>
+						</div>
 					</div>
-				</div>
-			))}
+				))}
+			</div>
 		</div>
 	);
 };

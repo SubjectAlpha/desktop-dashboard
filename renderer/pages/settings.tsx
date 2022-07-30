@@ -1,7 +1,6 @@
 import React from "react";
 import { ipcRenderer } from "electron";
 import Head from "next/head";
-import Link from "next/link";
 import Affirmation from "../objects/affirmations";
 import { BlueButton, RedButton } from "../components/utility/button";
 import { FaSave, FaTrash } from "react-icons/fa";
@@ -9,7 +8,9 @@ import TextArea from "../components/utility/textarea";
 
 export default function Settings() {
 	const [affirmationText, setAffirmationText] = React.useState("");
-	const [affirmations, setAffirmations] = React.useState(new Array<any>());
+	const [affirmations, setAffirmations] = React.useState(
+		new Array<Affirmation>()
+	);
 
 	React.useEffect(() => {
 		if (ipcRenderer) {
@@ -19,7 +20,10 @@ export default function Settings() {
 	}, []);
 
 	React.useEffect(() => {
-		const loadAffirmations = async (event, affirmations: Affirmation[]) => {
+		const loadAffirmations = async (
+			event,
+			affirmations: Array<Affirmation>
+		) => {
 			if (affirmations) {
 				affirmations.reverse();
 				setAffirmations([...affirmations]);
@@ -53,7 +57,7 @@ export default function Settings() {
 
 	const deleteAffirmation = (affirmationId: string) => {
 		const newAffirmations = affirmations.filter(
-			(a) => a._id !== affirmationId
+			(a) => a.id !== affirmationId
 		);
 		ipcRenderer.send("affirmations-save", newAffirmations);
 		setAffirmations(newAffirmations);
@@ -66,9 +70,7 @@ export default function Settings() {
 			</Head>
 			<div className="flex flex-row w-full mt-8">
 				<div className="basis-1/4 mr-4 ml-4 text-center border-2">
-					<Link href="/home" className="w-full">
-						<a className="btn btn-blue">Home</a>
-					</Link>
+					<BlueButton href="dashboard" text="Home" />
 				</div>
 				<div className="basis-3/4 mr-8">
 					<div className="flex flex-row w-full">
@@ -76,7 +78,8 @@ export default function Settings() {
 							<div className="border-2">
 								<h1>Application Settings</h1>
 								<hr />
-								<p>Start with Windows?</p>
+								<p>Start with system?</p>
+								<p>Dark/Light Mode</p>
 							</div>
 
 							<div className="border-2">
@@ -109,17 +112,17 @@ export default function Settings() {
 								</div>
 								{affirmations.map((affirmation) => (
 									<div
-										className="p-2 m-2 bg-gray-500 flex flex-row justify-between items-center"
-										key={affirmation._id}
+										className="p-2 m-2 secondary-item flex flex-row justify-between items-center"
+										key={affirmation.id}
 									>
 										<div className="basis-3/4">
-											{affirmation._contents}
+											{affirmation.contents}
 										</div>
 										<div className="basis-1/4">
 											<RedButton
 												onClick={() => {
 													deleteAffirmation(
-														affirmation._id
+														affirmation.id
 													);
 												}}
 											>

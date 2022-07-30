@@ -4,16 +4,21 @@ import Marquee from "react-fast-marquee";
 import { ipcRenderer } from "electron";
 
 export const Affirmations = () => {
-	const [affirmations, setAffirmations] = React.useState(new Array<any>());
+	const [affirmations, setAffirmations] = React.useState(
+		new Array<Affirmation>()
+	);
+
+	const loadAffirmations = async (
+		event,
+		affirmations: Array<Affirmation>
+	) => {
+		if (affirmations) {
+			affirmations.reverse();
+			setAffirmations(affirmations);
+		}
+	};
 
 	React.useEffect(() => {
-		const loadAffirmations = async (event, affirmations: Affirmation[]) => {
-			if (affirmations) {
-				affirmations.reverse();
-				setAffirmations([...affirmations]);
-			}
-		};
-
 		if (ipcRenderer) {
 			ipcRenderer.send("affirmations-read");
 
@@ -28,11 +33,11 @@ export const Affirmations = () => {
 	}, []);
 
 	return (
-		<div className="border-2 border-white-500 w-full p-5 text-2xl">
-			<Marquee gradientColor={[17, 24, 39]}>
+		<div className="w-full p-5 text-2xl">
+			<Marquee gradientColor={[255, 250, 255]}>
 				{affirmations.map((affirmation) => (
-					<span className="mr-4" key={affirmation._id}>
-						{affirmation._contents}
+					<span className="mr-4" key={affirmation.id}>
+						{affirmation.contents}
 					</span>
 				))}
 			</Marquee>
